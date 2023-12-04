@@ -3,7 +3,7 @@ using UnityEngine;
 public class PeaSlot : MonoBehaviour
 {
     RectTransform _rectTransform;
-    public GameObject _peaObject;
+    string _grapheme;
     
     void Awake()
     {

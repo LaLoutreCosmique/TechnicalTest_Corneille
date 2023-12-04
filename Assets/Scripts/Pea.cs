@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Pea : MonoBehaviour
 {
+    Pod _pod;
     [SerializeField] float volumeScale = 1f;
     TMP_Text _peaText;
     Button _peaBtn;
@@ -22,8 +23,9 @@ public class Pea : MonoBehaviour
         _peaBtn.onClick.AddListener(Perform);
     }
 
-    public void Init(string grapheme, string phoneme)
+    public void Init(Pod pod, string grapheme, string phoneme)
     {
+        this._pod = pod;
         this._grapheme = grapheme;
         _phonemeSound = Resources.Load<AudioClip>($"{PhonemePath}{phoneme}");
         if (_phonemeSound == null) Debug.LogWarning($"A phoneme sound is missing : {phoneme}");
