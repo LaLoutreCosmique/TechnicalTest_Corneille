@@ -32,7 +32,7 @@ public class Word
         string writingNoAccent = RemoveDiacritics(writing);
         
         _sound = Resources.Load<AudioClip>($"{SoundsFolder}{writingNoAccent}");
-        if (_sound == null) Debug.LogWarning($"A sound is missing : {writingNoAccent}");
+        if (_sound == null) Debug.LogWarning($"A word sound is missing : {writingNoAccent}");
         _image = Resources.Load<Texture2D>($"{ImagesFolder}{writingNoAccent}");
     }
     
@@ -57,7 +57,7 @@ public class Word
     /// <returns></returns>
     string PhonemeToFileName(string phoneme)
     {
-        (string, string)[] matches = { ("e", "e_"), ("n", "n_"), ("s", "s_"), ("z", "z_"), ("*", "~") };
+        (string, string)[] matches = { ("e", "e_"), ("n", "n_"), ("s", "s_"), ("z", "z_"), ("ij", "j"), ("*", "~") };
 
         foreach ((string, string) tuple in matches)
         {
