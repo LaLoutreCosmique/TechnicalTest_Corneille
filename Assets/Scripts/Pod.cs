@@ -67,8 +67,6 @@ public class Pod : MonoBehaviour
         }
         _slots[_grapheme.Length - 1] = lastSlot;
         
-        Debug.Log(_slots.Length);
-        
         // Debug not updated horizontal layout group
         StartCoroutine(DebugHorizontalLayout());
     }

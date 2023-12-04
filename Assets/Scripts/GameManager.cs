@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
         }
         // RIGHT ?
 
+        _extraPeas = new (Word, int)[ExtraPeasAmount];
         for (int i = 0; i < ExtraPeasAmount; i++)
         {
             _extraPeas[i] = DrawRandomPea(_database.WordList[randIndex]);
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
         {
             randWord = _database.WordList[DrawRandomWordIndex()];
             randGraphemeIndex = Random.Range(0, randWord.Grapheme.Length);
-        } while (wordToGuess.Grapheme.Any(g => g != randWord.Grapheme[randGraphemeIndex]));
+        } while (wordToGuess.Grapheme.Any(g => g == randWord.Grapheme[randGraphemeIndex]));
         
         Debug.Log($"OK CHECK YES GOOD WORKED : {randWord.Grapheme[randGraphemeIndex]}");
         return (randWord, randGraphemeIndex);
