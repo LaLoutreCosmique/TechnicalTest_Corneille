@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Pod : MonoBehaviour
@@ -105,6 +104,8 @@ public class Pod : MonoBehaviour
             newPea.Init(this, _extraPeas[i].Item1.Grapheme[extraPeaIndex], _extraPeas[i].Item1.Phoneme[extraPeaIndex]);
             peas.Add(newPea);
         }
+        
+        GameManager.Instance.audioSource.PlayOneShot(word.Sound);
     }
 
     public GameObject GuessPeaAndSlotMatch(string guessedGrapheme)
@@ -149,6 +150,7 @@ public class Pod : MonoBehaviour
     IEnumerator EndLevel()
     {
         yield return new WaitForSeconds(1);
+        GameManager.Instance.audioSource.PlayOneShot(word.Sound);
         GameManager.Instance.Start();
     }
 }

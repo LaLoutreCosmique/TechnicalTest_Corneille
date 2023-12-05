@@ -6,7 +6,6 @@ using Random = UnityEngine.Random;
 public class Pea : MonoBehaviour
 {
     Pod _pod;
-    [SerializeField] float volumeScale = 1f;
     
     TMP_Text _peaText;
     Button _peaBtn;
@@ -21,7 +20,7 @@ public class Pea : MonoBehaviour
     
     const float MoveSpeed = 8f;
     readonly int _wrongAnim = Animator.StringToHash("Wrong");
-    const string PhonemePath = "Sounds/Phonèmes/";
+    const string PhonemePath = "Sounds/Phonemes/";
 
     void Awake()
     {
@@ -48,7 +47,7 @@ public class Pea : MonoBehaviour
         this._pod = pod;
         this._grapheme = grapheme;
         _phonemeSound = Resources.Load<AudioClip>($"{PhonemePath}{phoneme}");
-        if (_phonemeSound == null) Debug.LogWarning($"A phoneme sound is missing : {phoneme}");
+        if (_phonemeSound == null && phoneme != "#") Debug.LogWarning($"A phoneme sound is missing : {phoneme}");
         
         _peaText.text = _grapheme.ToUpper();
         PlaceAtRandomLoc();
@@ -56,7 +55,7 @@ public class Pea : MonoBehaviour
 
     void Perform()
     {
-        GameManager.Instance.audioSource.PlayOneShot(_phonemeSound, volumeScale);
+        GameManager.Instance.audioSource.PlayOneShot(_phonemeSound);
 
         GameObject parentSlot = _pod.GuessPeaAndSlotMatch(_grapheme);
         if (parentSlot != null)

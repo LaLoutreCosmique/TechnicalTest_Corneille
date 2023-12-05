@@ -11,7 +11,7 @@ public class Word
     public string[] Grapheme;
     public string[] Phoneme;
 
-    [CanBeNull] readonly AudioClip _sound;
+    [CanBeNull] public readonly AudioClip Sound;
     [CanBeNull] readonly Texture2D _image;
 
     const string SoundsFolder = "Sounds/Mots/";
@@ -31,8 +31,8 @@ public class Word
 
         string writingNoAccent = RemoveDiacritics(writing);
         
-        _sound = Resources.Load<AudioClip>($"{SoundsFolder}{writingNoAccent}");
-        if (_sound == null) Debug.LogWarning($"A word sound is missing : {writingNoAccent}");
+        Sound = Resources.Load<AudioClip>($"{SoundsFolder}{writingNoAccent}");
+        if (Sound == null) Debug.LogWarning($"A word sound is missing : {writingNoAccent}");
         _image = Resources.Load<Texture2D>($"{ImagesFolder}{writingNoAccent}");
     }
     

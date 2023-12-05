@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
         {
             randWord = _database.WordList[DrawRandomWordIndex()];
             randGraphemeIndex = Random.Range(0, randWord.Grapheme.Length);
-        } while (wordToGuess.Grapheme.Any(g => g == randWord.Grapheme[randGraphemeIndex]));
+        } while (wordToGuess.Grapheme.Any(g => g == randWord.Grapheme[randGraphemeIndex]) || randWord.Grapheme[randGraphemeIndex] == "");
         
         return (randWord, randGraphemeIndex);
     }
