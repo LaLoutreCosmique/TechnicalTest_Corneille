@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    void Start()
+    public void Start()
     {
         int randIndex = DrawRandomWordIndex();
 

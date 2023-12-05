@@ -53,6 +53,7 @@ public class Pod : MonoBehaviour
         _currentGuessSlotIndex = 0;
         
         GetComponent<Animator>().SetTrigger(_playAnim);
+        Debug.Log(word.Writing);
     }
 
     public void SmoothResize()
@@ -79,7 +80,7 @@ public class Pod : MonoBehaviour
 
     IEnumerator DebugHorizontalLayout()
     {
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.001f);
         _midLayoutGroup.spacing += 0.001f;
         _midLayoutGroup.spacing -= 0.001f;
     }
@@ -88,7 +89,7 @@ public class Pod : MonoBehaviour
     {
         Pea newPea;
         
-        // Instantiate
+        // Instantiate right peas
         for (int i = 0; i < word.Grapheme.Length; i++)
         {
             newPea = Instantiate(peaPrefab, peaContainer.transform).GetComponent<Pea>();
@@ -96,6 +97,7 @@ public class Pod : MonoBehaviour
             peas.Add(newPea);
         }
 
+        // Instantiate wrong peas
         for (int i = 0; i < _extraPeas.Length; i++)
         {
             newPea = Instantiate(peaPrefab, peaContainer.transform).GetComponent<Pea>();
@@ -103,7 +105,50 @@ public class Pod : MonoBehaviour
             newPea.Init(this, _extraPeas[i].Item1.Grapheme[extraPeaIndex], _extraPeas[i].Item1.Phoneme[extraPeaIndex]);
             peas.Add(newPea);
         }
+    }
+
+    public GameObject GuessPeaAndSlotMatch(string guessedGrapheme)
+    {
+        if (word.Grapheme[_currentGuessSlotIndex] == guessedGrapheme)
+        {
+            _currentGuessSlotIndex++;
+            
+            // Check for end of level
+            if (_currentGuessSlotIndex == _slots.Length)
+                StartCoroutine(EndLevel());
+            
+            return _slots[_currentGuessSlotIndex-1];
+        }
+
+        return null;
+    }
+
+    void Cleanup()
+    {
+        if (peas.Count == 0) return;
         
+        // Destroy pod mid slots
+        for (int i = 1; i < _slots.Length-1; i++)
+        { 
+            Destroy(_slots[i].transform.parent.gameObject);
+        }
+
+        StartCoroutine(DebugHorizontalLayout());
         
+        // Destroy peas
+        Destroy(_slots[0].GetComponentInChildren<Pea>().gameObject);
+        Destroy(_slots[^1].GetComponentInChildren<Pea>().gameObject);
+        foreach (Pea pea in peas)
+        {
+            Destroy(pea.gameObject);
+        }
+
+        peas = new List<Pea>();
+    }
+
+    IEnumerator EndLevel()
+    {
+        yield return new WaitForSeconds(1);
+        GameManager.Instance.Start();
     }
 }

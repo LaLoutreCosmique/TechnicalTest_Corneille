@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,14 +7,20 @@ public class Pea : MonoBehaviour
 {
     Pod _pod;
     [SerializeField] float volumeScale = 1f;
+    
     TMP_Text _peaText;
     Button _peaBtn;
     RectTransform _rect;
     RectTransform _parentRec;
+    Animator _animator;
 
     string _grapheme;
     AudioClip _phonemeSound;
-
+    
+    bool _moveToCenter;
+    
+    const float MoveSpeed = 8f;
+    readonly int _wrongAnim = Animator.StringToHash("Wrong");
     const string PhonemePath = "Sounds/Phonèmes/";
 
     void Awake()
@@ -26,6 +31,16 @@ public class Pea : MonoBehaviour
         _rect = GetComponent<RectTransform>();
         
         _peaBtn.onClick.AddListener(Perform);
+    }
+
+    void LateUpdate()
+    {
+        if(!_moveToCenter) return;
+        
+        if (Vector2.Distance(_rect.anchoredPosition, Vector2.zero) > 0.01f)
+            _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, Vector2.zero, Time.deltaTime * MoveSpeed);
+        else
+            _moveToCenter = false;
     }
 
     public void Init(Pod pod, string grapheme, string phoneme)
@@ -41,8 +56,16 @@ public class Pea : MonoBehaviour
 
     void Perform()
     {
-        Debug.Log(_grapheme);
         GameManager.Instance.audioSource.PlayOneShot(_phonemeSound, volumeScale);
+
+        GameObject parentSlot = _pod.GuessPeaAndSlotMatch(_grapheme);
+        if (parentSlot != null)
+        {
+            transform.parent = parentSlot.transform;
+            _moveToCenter = true;
+        }
+        else
+            _animator.SetTrigger(_wrongAnim);
     }
 
     void PlaceAtRandomLoc()
@@ -69,5 +92,6 @@ public class Pea : MonoBehaviour
         } while (stackedPea); // Avoid superposition
 
         _rect.anchoredPosition = new Vector2(x, y);
+        _animator = GetComponent<Animator>();
     }
 }
