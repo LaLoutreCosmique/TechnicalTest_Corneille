@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] Pod pod;
     
     const int ExtraPeasAmount = 2;
-    (Word, int)[] _extraPeas; // int is the index of the random grapheme in the word
     
     void Awake()
     {
@@ -28,21 +27,14 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         int randIndex = DrawRandomWordIndex();
-        
-        // DON'T KEEP IT
-        foreach (var graph in _database.WordList[randIndex].Grapheme)
-        {
-            Debug.Log(graph);
-        }
-        // RIGHT ?
 
-        _extraPeas = new (Word, int)[ExtraPeasAmount];
+        (Word, int)[] extraPeas = new (Word, int)[ExtraPeasAmount]; // int is the index of the random grapheme in the word
         for (int i = 0; i < ExtraPeasAmount; i++)
         {
-            _extraPeas[i] = DrawRandomPea(_database.WordList[randIndex]);
+            extraPeas[i] = DrawRandomPea(_database.WordList[randIndex]);
         }
         
-        pod.Init(_database.WordList[randIndex]);
+        pod.Init(_database.WordList[randIndex], extraPeas);
     }
 
     int DrawRandomWordIndex()
@@ -60,7 +52,6 @@ public class GameManager : MonoBehaviour
             randGraphemeIndex = Random.Range(0, randWord.Grapheme.Length);
         } while (wordToGuess.Grapheme.Any(g => g == randWord.Grapheme[randGraphemeIndex]));
         
-        Debug.Log($"OK CHECK YES GOOD WORKED : {randWord.Grapheme[randGraphemeIndex]}");
         return (randWord, randGraphemeIndex);
     }
 }
