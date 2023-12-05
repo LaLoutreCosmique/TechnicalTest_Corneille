@@ -60,7 +60,7 @@ public class Pea : MonoBehaviour
         GameObject parentSlot = _pod.GuessPeaAndSlotMatch(_grapheme);
         if (parentSlot != null)
         {
-            transform.parent = parentSlot.transform;
+            transform.SetParent(parentSlot.transform);
             _moveToCenter = true;
         }
         else
