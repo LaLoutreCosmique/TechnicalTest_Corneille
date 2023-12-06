@@ -12,7 +12,7 @@ public class Word
     public string[] Phoneme;
 
     [CanBeNull] public readonly AudioClip Sound;
-    [CanBeNull] readonly Texture2D _image;
+    [CanBeNull] public readonly Sprite Image;
 
     const string SoundsFolder = "Sounds/Mots/";
     const string ImagesFolder = "Images/Mots/";
@@ -33,7 +33,7 @@ public class Word
         
         Sound = Resources.Load<AudioClip>($"{SoundsFolder}{writingNoAccent}");
         if (Sound == null) Debug.LogWarning($"A word sound is missing : {writingNoAccent}");
-        _image = Resources.Load<Texture2D>($"{ImagesFolder}{writingNoAccent}");
+        Image = Resources.Load<Sprite>($"{ImagesFolder}{writingNoAccent}");
     }
     
     /// <summary>

@@ -23,6 +23,8 @@ public class Pod : MonoBehaviour
     [SerializeField] GameObject peaPrefab;
     [SerializeField] GameObject peaContainer;
     public List<Pea> peas;
+
+    [SerializeField] SoundBtn _soundBtn;
     
     Vector2 _nextMidSize;
     const float ResizeSpeed = 6f;
@@ -105,12 +107,15 @@ public class Pod : MonoBehaviour
             peas.Add(newPea);
         }
         
-        GameManager.Instance.audioSource.PlayOneShot(word.Sound);
+        if (word.Sound is not null)
+            GameManager.Instance.audioSource.PlayOneShot(word.Sound);
+        
+        ShowImageButton();
     }
 
     public GameObject GuessPeaAndSlotMatch(string guessedGrapheme)
     {
-        if (word.Grapheme[_currentGuessSlotIndex] == guessedGrapheme)
+        if (_currentGuessSlotIndex < word.Grapheme.Length && word.Grapheme[_currentGuessSlotIndex] == guessedGrapheme)
         {
             _currentGuessSlotIndex++;
             
@@ -150,7 +155,18 @@ public class Pod : MonoBehaviour
     IEnumerator EndLevel()
     {
         yield return new WaitForSeconds(1);
-        GameManager.Instance.audioSource.PlayOneShot(word.Sound);
+        if (word.Sound is not null)
+            GameManager.Instance.audioSource.PlayOneShot(word.Sound);
         GameManager.Instance.Start();
+    }
+
+    void ShowImageButton()
+    {
+        _soundBtn.Show(word.Image, word.Sound);
+    }
+
+    void HideImageButton()
+    {
+        _soundBtn.Hide();
     }
 }

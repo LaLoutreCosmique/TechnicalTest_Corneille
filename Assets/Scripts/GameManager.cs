@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
         }
         
         pod.Init(_database.WordList[randIndex], extraPeas);
+        //pod.Init(_database.WordList[6], extraPeas);
     }
 
     int DrawRandomWordIndex()
