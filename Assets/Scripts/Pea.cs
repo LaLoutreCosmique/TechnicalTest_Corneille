@@ -55,7 +55,8 @@ public class Pea : MonoBehaviour
 
     void Perform()
     {
-        GameManager.Instance.audioSource.PlayOneShot(_phonemeSound);
+        if (_phonemeSound is not null)
+            GameManager.Instance.audioSource.PlayOneShot(_phonemeSound);
 
         GameObject parentSlot = _pod.GuessPeaAndSlotMatch(_grapheme);
         if (parentSlot != null)

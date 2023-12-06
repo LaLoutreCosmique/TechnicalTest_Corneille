@@ -38,7 +38,6 @@ public class SoundBtn : MonoBehaviour
     {
         if (showing)
         {
-            Debug.Log(Math.Abs(_rectTransform.sizeDelta.x - maxSize.x));
             if (Math.Abs(_rectTransform.sizeDelta.x - maxSize.x) > 0.1)
             {
                 _imgRectTransform.sizeDelta = Vector2.Lerp(_imgRectTransform.sizeDelta, maxSize, Time.deltaTime * AnimSpeed);
